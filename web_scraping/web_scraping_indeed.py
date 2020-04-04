@@ -1,3 +1,4 @@
+import math
 from time import sleep
 from selenium import webdriver
 from selenium.common.exceptions import ElementNotVisibleException
@@ -17,7 +18,7 @@ def scrape_indeed(search, loc, limit=50, canada=False):
         url = 'https://www.indeed.com/jobs?q={}&l={}&limit={}&radius=25&start=0'.format(search_term, loc, limit)
 
     # Start the browser and load the above URL
-    browser = webdriver.Chrome('/Users/justin/Downloads/chromedriver')
+    browser = webdriver.Chrome('/Users/viethnguyen/Documents/Projects/NLP_with_Python/chrome_driver/chromedriver')
     browser.get(url)
 
     # Empty dataframe in which we will store our data scraped from job posts
@@ -104,8 +105,22 @@ def scrape_indeed(search, loc, limit=50, canada=False):
 
 
 # download data, use Toronto as an example
-loc = 'Toronto%2C+ON'
-q = 'title%3A%28machine+learning%29'
+#loc = 'Toronto%2C+ON'
+#q = 'title%3A%28machine+learning%29'
 
-df0 = scrape_indeed(q, loc, 50, True)  # Jan 25
-df0.to_pickle('data_scientist_toronto.pkl')
+#df0 = scrape_indeed(q, loc, 50, True)  # Jan 25
+#df0.to_pickle('data_scientist_toronto.pkl')
+
+# download data, with the following cities
+cities = ['boston', 'chicago', 'la', 'ny', 'sf', 'montreal', 'toronto', 'vancouver']
+loc_list = ['Boston%2C+MA', 'Chicago%2C+IL', 'Los Angeles%20+CA', 'New%20+York%2C+NY',
+            'San%20+Francisco%2C+CA', 'Montreal%2C+QC', 'Toronto%2C+ON', 'Vancouver%2C+BC']
+q = 'title%3A%28machine+learning%29'
+for i in range(len(cities)):
+    if i > 4:
+        df0 = scrape_indeed(q, loc_list[i], 50, True)  # Jan 25
+    else:
+        df0 = scrape_indeed(q, loc_list[i], 50, False)  # Jan 25
+    df0.to_pickle('data_scientist_' + cities[i] + '.pkl')
+
+
